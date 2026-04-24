@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ion-Electron Device Group | Southeast University</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="/gemini/fonts-gstatic" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* 核心配色：牛津蓝 + 香槟金 */
+    --oxford-blue: #002147;
+    --navy-light: #003366;
+    --gold: #C5A059;
+    --gold-light: #E8D5B5;
+    
+    /* 中性色 */
+    --bg-white: #FFFFFF;
+    --bg-offwhite: #F8F9FA;
+    --text-main: #333333;
+    --text-muted: #666666;
+    --border-light: #E0E0E0;
+    
+    /* 字体设置 */
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Lato', sans-serif;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--text-main);
+    background-color: var(--bg-white);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ================= 导航栏 (HEADER) ================= */
+  header {
+    border-top: 6px solid var(--oxford-blue);
+    background: var(--bg-white);
+    padding: 2rem 0 1rem 0;
+    border-bottom: 1px solid var(--border-light);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo-title {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--oxford-blue);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  .logo-subtitle {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.3rem;
+  }
+
+  nav {
+    margin-top: 2rem;
+    width: 100%;
+  }
+
+  .nav-list {
+    display: flex;
+    list-style: none;
+    gap: 2.5rem;
+  }
+
+  .nav-link {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-main);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .nav-link:hover, .nav-link.active {
+    color: var(--oxford-blue);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ================= 页面切换逻辑 ================= */
+  .page-section {
+    display: none; /* 默认隐藏所有栏目 */
+    animation: fadeIn 0.5s ease-in-out;
+    padding: 4rem 0 6rem 0;
+  }
+
+  .page-section.active-page {
+    display: block; /* 只显示激活的栏目 */
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ================= 通用排版样式 ================= */
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    color: var(--oxford-blue);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .section-divider {
+    width: 60px;
+    height: 3px;
+    background-color: var(--gold);
+    margin-bottom: 2.5rem;
+  }
+
+  .lead-text {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 800px;
+    margin-bottom: 3rem;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  /* ================= HOME 页面 ================= */
+  .hero-banner {
+    background-color: var(--bg-offwhite);
+    border-left: 4px solid var(--gold);
+    padding: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .hero-banner h2 {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    color: var(--oxford-blue);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .hero-banner h2 i {
+    color: var(--gold);
+  }
+
+  .hero-banner p {
+    font-size: 1.1rem;
+    color: var(--text-main);
+    max-width: 800px;
+  }
+
+  .quick-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .stat-card {
+    border-top: 1px solid var(--border-light);
+    padding-top: 1.5rem;
+  }
+
+  .stat-card h3 {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    color: var(--oxford-blue);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-card p {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+  }
+
+  /* ================= RESEARCH 页面 ================= */
+  .research-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .research-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .research-item:nth-child(even) {
+    direction: rtl; /* 欧美常用：图文左右交替排列 */
+  }
+
+  .research-item:nth-child(even) > * {
+    direction: ltr;
+  }
+
+  .research-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    background-color: var(--bg-offwhite);
+    border: 1px solid var(--border-light);
+  }
+
+  .research-content h3 {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: var(--oxford-blue);
+    margin-bottom: 1rem;
+  }
+
+  .research-content p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .research-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* ================= MEMBERS 页面 ================= */
+  .pi-profile {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 3rem;
+    margin-bottom: 4rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .pi-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    border: 4px solid var(--bg-offwhite);
+    box-shadow: 0 0 0 1px var(--border-light);
+  }
+
+  .pi-info h3 {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    color: var(--oxford-blue);
+    margin-bottom: 0.2rem;
+  }
+
+  .pi-title {
+    font-size: 1rem;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  .pi-bio {
+    color: var(--text-main);
+    text-align: justify;
+  }
+
+  .team-section-title {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    color: var(--oxford-blue);
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 0.5rem;
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  .member-card {
+    text-align: left;
+  }
+
+  .member-photo {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    background-color: var(--bg-offwhite);
+    margin-bottom: 1rem;
+    filter: grayscale(20%); /* 略微降低饱和度，增加高级感 */
+    transition: filter 0.3s;
+  }
+
+  .member-card:hover .member-photo {
+    filter: grayscale(0%);
+  }
+
+  .member-name {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--oxford-blue);
+  }
+
+  .member-role {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .member-focus {
+    font-size: 0.8rem;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* ================= PUBLICATIONS 页面 ================= */
+  .pub-list {
+    list-style: none;
+  }
+
+  .pub-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border-light);
+    padding-left: 2rem;
+    text-indent: -2rem; /* 欧美学术论文标准悬挂缩进 */
+  }
+
+  .pub-item:first-child {
+    border-top: 1px solid var(--border-light);
+  }
+
+  .pub-title {
+    font-weight: 700;
+    color: var(--oxford-blue);
+  }
+
+  .pub-authors {
+    color: var(--text-main);
+  }
+  
+  .pub-authors strong {
+    color: #000;
+  }
+
+  .pub-journal {
+    font-style: italic;
+    color: var(--text-muted);
+  }
+
+  .pub-link {
+    display: inline-block;
+    text-indent: 0;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--navy-light);
+    text-decoration: none;
+    border-bottom: 1px solid var(--navy-light);
+  }
+
+  .pub-link:hover {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ================= JOIN US 页面 ================= */
+  .join-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+  }
+
+  .join-content p {
+    margin-bottom: 1.5rem;
+    text-align: justify;
+  }
+
+  .contact-block {
+    background-color: var(--bg-offwhite);
+    padding: 2rem;
+    border-top: 4px solid var(--oxford-blue);
+    margin-top: 2rem;
+  }
+
+  .contact-block h4 {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--oxford-blue);
+  }
+
+  .contact-email {
+    font-size: 1.1rem;
+    color: var(--navy-light);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .position-list {
+    list-style: none;
+  }
+
+  .position-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .position-title {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--oxford-blue);
+    margin-bottom: 0.3rem;
+  }
+
+  .position-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.5rem;
+    background-color: var(--bg-offwhite);
+    color: var(--oxford-blue);
+    border: 1px solid var(--border-light);
+    margin-top: 0.5rem;
+  }
+
+  /* ================= FOOTER ================= */
+  footer {
+    background-color: var(--oxford-blue);
+    color: var(--bg-white);
+    padding: 4rem 0 2rem 0;
+    font-size: 0.9rem;
+  }
+
+  .footer-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .footer-col p {
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 0.5rem;
+  }
+
+  .copyright {
+    text-align: center;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.8rem;
+  }
+
+  /* ================= 响应式 ================= */
+  @media (max-width: 768px) {
+    .nav-list { flex-wrap: wrap; gap: 1rem; }
+    .hero-banner { padding: 2rem; }
+    .quick-links { grid-template-columns: 1fr; }
+    .research-item, .pi-profile, .join-layout { grid-template-columns: 1fr; }
+    .research-item:nth-child(even) { direction: ltr; }
+    .footer-content { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-content">
+      <a href="#" class="logo-title" onclick="switchPage('home')">Ion-Electron Device Group</a>
+      <div class="logo-subtitle">School of Electronic Science and Engineering · Southeast University</div>
+    </div>
+    <nav>
+      <ul class="nav-list">
+        <li><a class="nav-link active" data-target="home">Overview</a></li>
+        <li><a class="nav-link" data-target="research">Research</a></li>
+        <li><a class="nav-link" data-target="members">People</a></li>
+        <li><a class="nav-link" data-target="publications">Publications</a></li>
+        <li><a class="nav-link" data-target="join">Opportunities</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <section id="home" class="page-section active-page">
+    <div class="hero-banner">
+      <h2><em>Ion-Electron</em> Transport Mechanisms <br>& Multifunctional Devices</h2>
+      <p>课题组致力于离子电子学的发展，主要研究方向包括：离子电子输运机理与调控机制、超强电场下新物理机制；低维功能信息材料；新型离子电子双载流子器件及应用、石墨烯芯片、感存算一体芯片等。</p>
+    </div>
+
+    <div class="quick-links">
+      <div class="stat-card">
+        <h3>5+</h3>
+        <p>Top-tier Publications</p>
+      </div>
+      <div class="stat-card">
+        <h3>¥3M+</h3>
+        <p>Active Funding</p>
+      </div>
+      <div class="stat-card">
+        <h3>Top</h3>
+        <p>Global Collaborations</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="research" class="page-section">
+    <h2 class="section-title">Research Themes</h2>
+    <div class="section-divider"></div>
+    <p class="lead-text">Our group explores the frontiers of ionotronics, focusing on the intricate coupling between ionic and electronic transport at the nanoscale.</p>
+
+    <div class="research-grid">
+      <div class="research-item">
+        <img src="images/research-1.jpg" alt="Transport Mechanisms" class="research-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' background=\'%23F8F9FA\'></svg>'">
+        <div class="research-content">
+          <span class="research-tag">Transport & Logic</span>
+          <h3>离子电子输运机理与调控机制</h3>
+          <p>该机制实现了同一器件内"离子流"与"电子流"的独立、精准且稳健的控制，为开发高集成度的新型质子逻辑与非易失性存储器件提供了全新方案。</p>
+        </div>
+      </div>
+
+      <div class="research-item">
+        <img src="images/research-2.jpg" alt="Low-dimensional Materials" class="research-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' background=\'%23F8F9FA\'></svg>'">
+        <div class="research-content">
+          <span class="research-tag">2D Materials</span>
+          <h3>低维功能信息材料</h3>
+          <p>石墨烯、二维半导体等纳米尺度材料。凭借量子限域与界面效应，可实现超低功耗、高灵敏度信息存储、传感与处理，是后摩尔时代信息器件变革的核心载体。</p>
+        </div>
+      </div>
+
+      <div class="research-item">
+        <img src="images/research-3.jpg" alt="Dual-carrier Devices" class="research-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' background=\'%23F8F9FA\'></svg>'">
+        <div class="research-content">
+          <span class="research-tag">In-memory Computing</span>
+          <h3>新型离子电子双载流子器件</h3>
+          <p>新型离子电子双载流子器件利用离子与电子协同输运，突破纯电子器件限制。兼具高电导与可调界面特性，为感存算一体化及低维材料调控提供新机制。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="members" class="page-section">
+    <h2 class="section-title">Principal Investigator</h2>
+    <div class="section-divider"></div>
+
+    <div class="pi-profile">
+      <img src="images/t1.jpg" alt="Prof. Jincheng Tong" class="pi-photo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' background=\'%23F8F9FA\'></svg>'">
+      <div class="pi-info">
+        <h3>Prof. Jincheng Tong (仝金程)</h3>
+        <p class="pi-title">Principal Investigator / 青年首席教授</p>
+        <p class="pi-bio">
+          东南大学青年首席教授，博士生导师。获得国家级青年人才项目资助。博士毕业于英国曼彻斯特大学，并先后在剑桥大学、曼彻斯特大学&英国国家石墨烯中心担任博士后研究员。主要研究方向为离子-电子输运机制与多功能信息器件。近年来以第一作者兼共同通讯作者发表包括Nature、Nature Commun.(2篇)、Nano Letters等国际顶刊多篇。代表性成果入选《物理世界》评选的"2024年物理学十大科学突破"。
+        </p>
+      </div>
+    </div>
+
+    <h3 class="team-section-title">Ph.D. Candidates</h3>
+    <div class="team-grid">
+      <div class="member-card">
+        <img src="images/xcy.jpg" class="member-photo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' background=\'%23F8F9FA\'></svg>'">
+        <div class="member-name">Chaoyou Xu</div>
+        <div class="member-role">Ph.D. Student (2026–)</div>
+        <div class="member-focus">感存算一体芯片</div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo"></div>
+        <div class="member-name">TBA</div>
+        <div class="member-role">Ph.D. Student</div>
+      </div>
+    </div>
+
+    <h3 class="team-section-title">Master Students</h3>
+    <div class="team-grid">
+      <div class="member-card">
+        <div class="member-photo"></div>
+        <div class="member-name">TBA</div>
+        <div class="member-role">Master Student</div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo"></div>
+        <div class="member-name">TBA</div>
+        <div class="member-role">Master Student</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="publications" class="page-section">
+    <h2 class="section-title">Selected Publications</h2>
+    <div class="section-divider"></div>
+    <p class="lead-text">A chronological list of our representative peer-reviewed articles.</p>
+
+    <ul class="pub-list">
+      <li class="pub-item">
+        <span class="pub-title">Layer-selective hydrogenation and proton transport in twisted bilayer graphene.</span><br>
+        <span class="pub-authors"><strong>J. Tong*</strong>, G. Chen, H. Li, E. Hoenig, M. Alhashmi, X. Zhang, D. Bahamon, G. R. Tainton, S. Sullivan-Allsop, Y. Mayamei, D. R. da Costa, L. F. Vega, S. J. Haigh, D. Domaretskiy, F. M. Peeters, M. Lozada-Hidalgo*.</span><br>
+        <span class="pub-journal">Nature Communications (2026).</span><br>
+        <a href="#" class="pub-link">Article Link</a>
+      </li>
+
+      <li class="pub-item">
+        <span class="pub-title">Control of proton transport and hydrogenation in double-gated graphene.</span><br>
+        <span class="pub-authors"><strong>J. Tong*+</strong>, Y. Fu+, Y., D. Domaretskiy, F. Della Pia, P. Dagar, L. Powell, D. Bahamon, S. Huang, B. Xin, R. N. Costa Filho, L. F. Vega, I. V. Grigorieva, F. M. Peeters, A. Michaelides, M. Lozada-Hidalgo*.</span><br>
+        <span class="pub-journal">Nature, 630(8017), 619-624 (2024).</span><br>
+        <a href="https://doi.org/10.1038/s41586-024-07435-8" class="pub-link">DOI: 10.1038/s41586-024-07435-8</a>
+      </li>
+
+      <li class="pub-item">
+        <span class="pub-title">Crystallization of molecular layers produced under confinement onto a surface.</span><br>
+        <span class="pub-authors"><strong>J. Tong*</strong>, N. de Bruyn, A. Alieva, E. J. Legge, M. Boyes, X. Song, A. J. Walisinghe, A. J. Pollard, Michael. W. Anderson, T. Vetter, M. Melle-Franco, Cinzia Casiraghi*.</span><br>
+        <span class="pub-journal">Nature Communications (2024).</span><br>
+        <a href="https://doi.org/10.1038/s41467-024-45900-0" class="pub-link">DOI: 10.1038/s41467-024-45900-0</a>
+      </li>
+      
+      <li class="pub-item">
+        <span class="pub-title">EGOFETs for quantitative monitoring of molecular dynamics of crystallization at solid-liquid interface.</span><br>
+        <span class="pub-authors"><strong>J. Tong*</strong>, A. Doumbia, R. Khan, A. Rahmanudin, S. R. Gollu, M. L. Turner*, C. Casiraghi*.</span><br>
+        <span class="pub-journal">Nano Letters, 22(7): 2643-2649 (2022).</span><br>
+        <a href="https://doi.org/10.1021/acs.nanolett.1c04424" class="pub-link">DOI: 10.1021/acs.nanolett.1c04424</a>
+      </li>
+    </ul>
+  </section>
+
+  <section id="join" class="page-section">
+    <h2 class="section-title">Opportunities</h2>
+    <div class="section-divider"></div>
+    
+    <div class="join-layout">
+      <div class="join-content">
+        <p>欢迎具有微电子、半导体物理、电化学、二维及有机无机半导体材料与器件等相关领域背景的博士后加入我们的团队！团队将提供有竞争力的薪资与后期发展空间。</p>
+        <p>每年招收 2–3 名博士研究生与 3–5 名硕士研究生。学习期间，提供良好的学习科研条件以及公平、合理的课题组氛围。根据团队发展及成员需求，可提供国外合作机构（如英国曼彻斯特大学、剑桥大学、新加坡国立大学等）的交流访学与深造机会。</p>
+        
+        <div class="contact-block">
+          <h4>Application & Inquiry</h4>
+          <p>Please send your CV and a brief statement of research interests to:</p>
+          <a href="mailto:jincheng.tong@seu.edu.cn" class="contact-email">jincheng.tong@seu.edu.cn</a>
+        </div>
+      </div>
+
+      <div class="join-sidebar">
+        <h3 style="font-family: var(--font-serif); color: var(--oxford-blue); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); padding-bottom:0.5rem;">Openings</h3>
+        <ul class="position-list">
+          <li class="position-item">
+            <div class="position-title">Postdoctoral Fellow</div>
+            <div class="position-meta">Competitive Salary</div>
+            <div class="status-badge">Accepting Applications</div>
+          </li>
+          <li class="position-item">
+            <div class="position-title">Ph.D. Student</div>
+            <div class="position-meta">2-3 positions / year</div>
+            <div class="status-badge">Open</div>
+          </li>
+          <li class="position-item">
+            <div class="position-title">Master Student</div>
+            <div class="position-meta">3-5 positions / year</div>
+            <div class="status-badge">Open</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4>Ion-Electron Device Group</h4>
+        <p>School of Electronic Science and Engineering</p>
+        <p>Southeast University</p>
+        <p>Nanjing, China</p>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>Email: jincheng.tong@seu.edu.cn</p>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2026 Ion-Electron Device Group. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 获取所有导航链接和页面容器
+  const navLinks = document.querySelectorAll('.nav-link');
+  const sections = document.querySelectorAll('.page-section');
+
+  // 页面切换函数
+  function switchPage(targetId) {
+    // 隐藏所有页面
+    sections.forEach(sec => sec.classList.remove('active-page'));
+    // 取消所有导航的高亮
+    navLinks.forEach(link => link.classList.remove('active'));
+
+    // 显示目标页面
+    document.getElementById(targetId).classList.add('active-page');
+    
+    // 高亮对应的导航菜单
+    const activeLink = document.querySelector(`.nav-link[data-target="${targetId}"]`);
+    if(activeLink) activeLink.classList.add('active');
+
+    // 页面切回顶部
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // 为导航绑定点击事件
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = link.getAttribute('data-target');
+      if(target) switchPage(target);
+    });
+  });
+
+  // 处理直接带 Hash 的访问 (例如 index.html#research)
+  window.addEventListener('load', () => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash && document.getElementById(hash)) {
+      switchPage(hash);
+    }
+  });
+</script>
+
+</body>
+</html>
